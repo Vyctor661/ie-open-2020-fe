@@ -87,3 +87,19 @@ export const register = async (
     return "Oops, looks like something went wrong.";
   }
 };
+
+export const getUserData = async () => {
+  const userID = localStorage.getItem("userid");
+  if (userID === "undefined") {
+    return {};
+  }
+  const userData = await fetch(`${apiUrl}/users/userData/${userID}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await userData.json();
+};

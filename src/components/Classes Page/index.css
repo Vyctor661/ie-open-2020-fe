@@ -1,0 +1,25 @@
+.classesWrapper {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+.profileCreateClass {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  padding-top: 20px;
+  margin: 10px;
+  width: 20%;
+  background: #212121;
+  height: 100%;
+}
+
+.userName {
+  border-bottom: 1px solid gray;
+  padding: 20px 0;
+}
+
+.createNewClass {
+  padding: 10px;
+}

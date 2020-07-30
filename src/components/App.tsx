@@ -2,7 +2,8 @@ import React from "react";
 
 import "./App.css";
 import { NavBar } from "./common/Navigation Bar/index";
-import LoginRegister from "./LoginRegister/index";
+import LoginRegister from "./LoginRegister Page/index";
+import Classes from "./Classes Page/index";
 
 import { HashRouter, Route, Switch } from "react-router-dom";
 
@@ -16,6 +17,9 @@ const App = () => {
         </Route>
         <Route path="/loginRegister">
           <LoginRegister></LoginRegister>
+        </Route>
+        <Route path="/classes">
+          <Classes></Classes>
         </Route>
       </Switch>
     </HashRouter>
