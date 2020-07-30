@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -6,7 +6,7 @@ import Logo from "../logo/index";
 
 import "./index.css";
 
-import { getLoggedIn } from "../../../utils/helpers";
+import { getLoggedIn, logout } from "../../../utils/helpers";
 
 const GetLoginProfile = (props: { isLogged: boolean }) => {
   if (props.isLogged) {
@@ -17,8 +17,13 @@ const GetLoginProfile = (props: { isLogged: boolean }) => {
           <Link to="/classes">Classes</Link>
         </li>
         <li className="login">
-          <Link to="/profile" hidden={false}>
-            Profile
+          <Link
+            to="/"
+            onClick={() => {
+              logout();
+            }}
+          >
+            Logout
           </Link>
         </li>
       </>
@@ -33,6 +38,14 @@ const GetLoginProfile = (props: { isLogged: boolean }) => {
 };
 
 export const NavBar = () => {
+  const [isLogged, setIsLogged] = useState(false);
+  const updateIsLogged = async () => {
+    setIsLogged(await getLoggedIn());
+  };
+  useEffect(() => {
+    updateIsLogged();
+  }, []);
+
   return (
     <div className="fix">
       <ul>
@@ -44,7 +57,7 @@ export const NavBar = () => {
             <span className="homeTitle">BOOKED</span>
           </Link>
         </li>
-        <GetLoginProfile isLogged={getLoggedIn()}></GetLoginProfile>
+        <GetLoginProfile isLogged={isLogged}></GetLoginProfile>
       </ul>
     </div>
   );
