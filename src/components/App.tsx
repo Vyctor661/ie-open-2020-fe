@@ -6,6 +6,7 @@ import LoginRegister from "./LoginRegister Page/index";
 import Classes from "./Classes Page/index";
 
 import { HashRouter, Route, Switch } from "react-router-dom";
+import HomePage from "./Home Page";
 
 const App = () => {
   return (
@@ -13,7 +14,7 @@ const App = () => {
       <NavBar />
       <Switch>
         <Route exact path="/">
-          Home page here
+          <HomePage></HomePage>
         </Route>
         <Route path="/loginRegister">
           <LoginRegister></LoginRegister>
