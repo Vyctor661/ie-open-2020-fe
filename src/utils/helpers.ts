@@ -1,5 +1,5 @@
 import { apiUrl } from "./constants";
-import { Class } from "./interfaces";
+import { Class, Homework } from "./interfaces";
 
 export const logout = async () => {
   await fetch(`${apiUrl}/auth/logout`, {
@@ -32,6 +32,21 @@ export const getLoggedIn = async (): Promise<boolean> => {
     localStorage.setItem("userid", result.userid);
   }
   return result.islogged;
+};
+
+export const joinClassByCode = async (code: string): Promise<string> => {
+  const result = await (
+    await fetch(`${apiUrl}/classes/joinClassByCode`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code }),
+    })
+  ).json();
+  console.log(result);
+  return result.message;
 };
 
 export const login = async (username: string, password: string) => {
@@ -118,4 +133,52 @@ export const getClassData = async (id: number | string): Promise<Class> => {
   });
 
   return (await classData.json())[0];
+};
+
+export const getClassHWData = async (
+  id: number | string
+): Promise<Homework[]> => {
+  if (!id) {
+    return [{ id: -1, classid: -1, dueDate: -1, name: "", questions: [] }];
+  }
+  const classData = await fetch(`${apiUrl}/homework/hwForClass/${id}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return classData.json();
+};
+
+export const hwDataById = async (id: number | string): Promise<Homework> => {
+  if (!id) {
+    return { id: -1, classid: -1, dueDate: -1, name: "", questions: [] };
+  }
+  const classData = await fetch(`${apiUrl}/homework/hwData/${id}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return classData.json();
+};
+
+export const submitHwData = async (
+  hwid: number,
+  choices: string
+): Promise<string> => {
+  if (!hwid) {
+    return "Homework ID is invalid";
+  }
+  const classData = await fetch(`${apiUrl}/homework/completeHW/${hwid}`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ homeworkid: hwid, choices }),
+  });
+  return classData.json();
 };
