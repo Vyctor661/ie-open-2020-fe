@@ -2,6 +2,7 @@ import React from "react";
 
 import "./App.css";
 import { NavBar } from "./common/Navigation Bar/index";
+import LoginRegister from "./LoginRegister/index";
 
 import { HashRouter, Route, Switch } from "react-router-dom";
 
@@ -14,7 +15,7 @@ const App = () => {
           Home page here
         </Route>
         <Route exact path="/login">
-          Login page here
+          <LoginRegister></LoginRegister>
         </Route>
         <Route exact path="/register">
           Register page here
