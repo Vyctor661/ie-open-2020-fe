@@ -1,0 +1,50 @@
+.fix {
+  width: 100%;
+  background-color: #212121;
+}
+.fix ul {
+  font-family: "Verdana";
+  font-size: 18px;
+
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #212121;
+  display: inline-flex;
+  width: "100%";
+}
+.fix a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 18px 28px;
+  text-decoration: none;
+  height: 25px;
+}
+
+.fix a:hover {
+  border-top: 2px solid #2b415e;
+  height: 25px;
+  padding-top: 16px;
+  background-color: #212121;
+  filter: brightness(1.2);
+}
+
+.login {
+  position: absolute;
+  right: 0;
+}
+.fixSvg {
+  float: left;
+  max-width: 20px;
+}
+
+.homeTitle {
+  float: right;
+  text-align: center;
+  margin-left: 5px;
+}
+.homeLink {
+  display: inline-flex;
+}
