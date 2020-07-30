@@ -1,90 +1,93 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
 .home {
-    height: calc(100vh - 61px);
-    width: 100vw;
-    overflow: visible;
+  height: calc(100vh - 61px);
+  width: 100vw;
+  overflow: auto;
 }
 
 .center {
-    height: 500px;
-    width: 1000px;
-    margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+  height: 500px;
+  width: 1000px;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .description {
-    display: inline-block;
-    height: 80%;
-    position: absolute;
-    top: 0;
-    margin: 0;
-    text-align: justify;
-    width: min-content;
+  display: inline-block;
+  height: 80%;
+  position: absolute;
+  top: 0;
+  margin: 0;
+  text-align: center;
+  width: min-content;
 }
 
 .mainWord {
-    margin: 0;
-    letter-spacing: 5px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 120px;
+  margin: 0;
+  letter-spacing: 5px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 120px;
+  width: 100%;
 }
 
 .secondaryWord {
-    font-size: 36px;
+  font-size: 36px;
 }
 
 .joinNowButton {
-    margin: 0 auto;
-    cursor: pointer;
-    z-index: 2;
+  margin: 0 auto;
+  cursor: pointer;
+  z-index: 2;
 }
 
 .joinNowButton button {
-    font-size: 30px;
-    height: 15%;
-    cursor: pointer;
-    z-index: 1;
+  font-size: 25px;
+  font-style: italic;
+  height: 15%;
+  cursor: pointer;
+  z-index: 1;
 }
 
 @media only screen and (min-width: 901px) {
-    .joinNowButton {
-        width: 25%;
-    }
+  .joinNowButton {
+    width: 25%;
+  }
 }
 
 @media only screen and (max-width: 900px) {
-    .center {
-        padding-top: 50px;
-        position: static;
-        width: 100%;
-        text-align: center;
-    }
-    .joinNowButton {
-        position: static;
-    }
-    .description {
-        position: static;
-        display: block;
-        margin: auto;
-        width: 100%;
-        height: min-content;
-    }
+  .center {
+    padding-top: 50px;
+    position: static;
+    width: 100%;
+    text-align: center;
+  }
+  .joinNowButton {
+    position: static;
+  }
+  .description {
+    position: static;
+    display: block;
+    margin: auto;
+    width: 100%;
+    height: min-content;
+  }
 }
 
 @media only screen and (max-width: 600px) {
-    .center {
-        padding: 10px;
-        width: calc(100% - 20px);
-    }
-    .mainWord {
-        font-size: 75px;
-    }
-    .secondaryWord {
-        font-size: 24px;
-    }
+  .center {
+    padding: 10px;
+    width: calc(100% - 20px);
+  }
+  .mainWord {
+    font-size: 75px;
+    text-align: center;
+  }
+  .secondaryWord {
+    font-size: 24px;
+  }
 }

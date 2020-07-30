@@ -13,17 +13,24 @@ export default () => {
     <div className="home">
       <div className="center">
         <span className="mainLogo">
-          <Logo height="400" width={displayedHeight.toString()} viewBox="0 0 512 512"></Logo>
+          <Logo
+            height="400"
+            width={displayedHeight.toString()}
+            viewBox="0 0 512 512"
+          ></Logo>
         </span>
         <div className="description">
           <h1 className="mainWord">Booked</h1>
-          <p className="secondaryWord">A simple, easy-to-use platform for ensuring your students are focused while studying.</p>
+          <p className="secondaryWord">
+            A simple, easy-to-use platform for ensuring your students are
+            focused while studying.
+          </p>
         </div>
         <div className="joinNowButton">
-        <Link to="/loginregister/register">
-          <button>Join now!</button>
-        </Link>
-      </div>
+          <Link to="/loginRegister/register">
+            <button>Join now</button>
+          </Link>
+        </div>
       </div>
     </div>
   );
