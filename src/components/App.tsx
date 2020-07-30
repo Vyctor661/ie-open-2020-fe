@@ -14,11 +14,8 @@ const App = () => {
         <Route exact path="/">
           Home page here
         </Route>
-        <Route exact path="/login">
+        <Route path="/loginRegister">
           <LoginRegister></LoginRegister>
-        </Route>
-        <Route exact path="/register">
-          Register page here
         </Route>
       </Switch>
     </HashRouter>

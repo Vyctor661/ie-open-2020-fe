@@ -1,7 +1,15 @@
 import React from "react";
 
-import LoginForm from "../common/Login Form/index";
+import { LoginPage, RegisterPage } from "../common/Login Form/index";
+import { Switch, Route } from "react-router-dom";
 
-export default () => {
-  return <LoginForm></LoginForm>;
-};
+export default () => (
+  <Switch>
+    <Route exact path="/loginRegister/register">
+        <RegisterPage></RegisterPage>
+    </Route>
+    <Route exact path="/loginRegister/login">
+        <LoginPage></LoginPage>
+    </Route>
+  </Switch>
+)
