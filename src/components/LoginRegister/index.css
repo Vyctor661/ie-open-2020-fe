@@ -1,0 +1,38 @@
+.wrapper {
+  height: 100vh;
+  width: 100%;
+}
+.innerWrapper {
+  position: absolute;
+  height: 45%;
+  width: 700px;
+  top: 25%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: gray;
+  display: flex;
+  -webkit-box-shadow: 9px 9px 31px 4px rgba(0, 0, 0, 0.51);
+  -moz-box-shadow: 9px 9px 31px 4px rgba(0, 0, 0, 0.51);
+  box-shadow: 9px 9px 31px 4px rgba(0, 0, 0, 0.51);
+}
+
+.logoWrapper {
+  width: 300px;
+  height: 100%;
+  text-align: center;
+  font-size: 40px;
+  background-color: #212121;
+}
+.logo {
+  padding-top: 20px;
+}
+.name {
+  margin: auto;
+}
+
+.formWrapper form {
+  width: 80%;
+  margin: auto;
+}

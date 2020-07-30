@@ -26,7 +26,7 @@ const GetLoginProfile = (props: { isLogged: boolean }) => {
   } else {
     return (
       <li className="login">
-        <Link to="/login">Login</Link>
+        <Link to="/loginRegister/login">Login</Link>
       </li>
     );
   }

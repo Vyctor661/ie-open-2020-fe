@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 import { login } from "../../../utils/helpers";
@@ -20,10 +21,9 @@ export default () => {
       <form>
         <div className="container">
           <label>
-            Username
             <input
               type="text"
-              placeholder="Enter username"
+              placeholder="Enter Username"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -33,14 +33,13 @@ export default () => {
           </label>
 
           <label>
-            Password
             <input
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
               type="password"
-              placeholder="Enter password"
+              placeholder="Enter Password"
               required
             ></input>
           </label>
@@ -53,10 +52,14 @@ export default () => {
           </button>
         </div>
       </form>
+      <div className="instead">
+        <Link to="/loginregister/register">
+          <button>Register instead</button>
+        </Link>
+      </div>{" "}
       <div className="status" ref={statusDiv}>
         {" "}
       </div>
     </div>
   );
 };
-

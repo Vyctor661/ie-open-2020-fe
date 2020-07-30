@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import "./index.css";
 
 import { register } from "../../../utils/helpers";
@@ -21,7 +22,6 @@ export default () => {
       <form>
         <div className="container">
           <label>
-            Role
             <select
               placeholder="Enter username"
               value={role}
@@ -36,7 +36,6 @@ export default () => {
           </label>
 
           <label>
-            Username
             <input
               type="text"
               placeholder="Enter username"
@@ -49,7 +48,6 @@ export default () => {
           </label>
 
           <label>
-            Password
             <input
               value={password}
               onChange={(e) => {
@@ -65,10 +63,16 @@ export default () => {
               submit();
             }}
           >
-            Login
+            Register
           </button>
         </div>
       </form>
+
+      <div className="instead">
+        <Link to="/loginregister/login">
+          <button>Login instead</button>
+        </Link>
+      </div>
       <div className="status" ref={statusDiv}>
         {" "}
       </div>
