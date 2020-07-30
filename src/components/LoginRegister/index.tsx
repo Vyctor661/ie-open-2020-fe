@@ -1,6 +1,7 @@
 import React from "react";
 
-import { LoginPage, RegisterPage } from "../common/Login Form/index";
+import LoginPage from "../common/Login Form/index";
+import RegisterPage from "../common/Register Form/index";
 import { Switch, Route } from "react-router-dom";
 
 export default () => (
