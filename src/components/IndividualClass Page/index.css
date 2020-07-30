@@ -1,0 +1,49 @@
+.ClassWrapper {
+  display: flex;
+  height: 90vh;
+  margin: 5px;
+  text-align: center;
+}
+
+.SettingsHomework {
+  width: 30%;
+  margin: 4px;
+}
+.classSettings {
+  border: 1px solid #2b415e;
+  height: 50%;
+  margin-bottom: 6px;
+  background-color: #2b415e;
+}
+.classHomework {
+  border: 1px solid #2b415e;
+  height: 50%;
+  background-color: #2b415e;
+}
+.classChat {
+  border: 1px solid #2b415e;
+  height: 100%;
+  width: 50%;
+  margin: 4px;
+}
+.classParticipants {
+  border: 1px solid #2b415e;
+  height: 100%;
+  width: 20%;
+  margin: 4px;
+}
+/* brb */
+
+h1,
+h2 {
+  width: 95%;
+  margin: 10px auto;
+  padding-bottom: 5px;
+  border-bottom: 1px solid grey;
+}
+.classesUserHwPannel {
+  float: left;
+  width: 100%;
+  text-align: left;
+  margin: 5px 20px;
+}
