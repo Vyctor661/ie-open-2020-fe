@@ -3,22 +3,81 @@ import React, { useState, useEffect } from "react";
 // import { Switch, Route } from "react-router-dom";
 
 import "./index.css";
-import { getUserData, getLoggedIn } from "../../utils/helpers";
+import { getUserData, getLoggedIn, getClassData } from "../../utils/helpers";
+import { Class } from "../../utils/interfaces";
+
+const GetTableOfClasses = async (
+  classes: Array<number>
+): Promise<JSX.Element> => {
+  if (!classes.length)
+    return <h1>Looks like you don't participate in any classes.</h1>;
+
+  const allClasses: Array<Class> = await Promise.all(
+    classes.map((value) => {
+      return getClassData(value);
+    })
+  );
+  const allTeachers = await Promise.all(
+    allClasses.map((value) => {
+      return getUserData(value.teacher);
+    })
+  );
+
+  const List = await Promise.all(
+    allClasses.map(async (value, index) => {
+      console.log(value);
+
+      return (
+        <tr
+          className="listItemWrapper"
+          key={index + "class" + value.name}
+          onClick={() => {
+            window.location.replace("#/classes/" + value.id);
+          }}
+        >
+          <td>{value.id}</td>
+          <td>{value.name}</td>
+          <td>{allTeachers[index].name}</td>
+          <td>{value.students.length}</td>
+        </tr>
+      );
+    })
+  );
+  return (
+    <table className="classesTable" key="loadedClasses">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Teacher</th>
+          <th>Class Size</th>
+        </tr>
+      </thead>
+      <tbody>{List}</tbody>
+    </table>
+  );
+};
 
 export default () => {
   const [userData, setUserData] = useState<any>({});
   const [isLogged, setIsLogged] = useState(false);
-  const updateIsLogged = async () => {
+  const [allClasses, setAllClasses] = useState<JSX.Element>(
+    <table key="defaultClassesTable" className="classesTable"></table>
+  );
+
+  const UpdateIsLogged = async () => {
     setIsLogged(await getLoggedIn());
   };
-  const UpdateUserData = async () => {
-    setUserData(await getUserData());
+  const Update = async () => {
+    const userData = await getUserData();
+    setUserData(userData);
+    setAllClasses(await GetTableOfClasses(userData.classes));
   };
 
   useEffect(() => {
-    UpdateUserData();
-    updateIsLogged();
-  }, [userData.role]);
+    Update();
+    UpdateIsLogged();
+  }, [userData.id, allClasses.key]);
 
   return (
     <>
@@ -36,7 +95,10 @@ export default () => {
               <></>
             )}
           </div>
-          <div className="allClasses"></div>
+          <div className="allClasses">
+            <h1>Your classes:</h1>
+            {allClasses}
+          </div>
         </div>
       ) : (
         <h1>You need to be logged in to see this page.</h1>

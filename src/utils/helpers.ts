@@ -1,4 +1,5 @@
 import { apiUrl } from "./constants";
+import { Class } from "./interfaces";
 
 export const logout = async () => {
   await fetch(`${apiUrl}/auth/logout`, {
@@ -88,12 +89,12 @@ export const register = async (
   }
 };
 
-export const getUserData = async () => {
+export const getUserData = async (userid?: string | number) => {
   const userID = localStorage.getItem("userid");
   if (userID === "undefined") {
     return {};
   }
-  const userData = await fetch(`${apiUrl}/users/userData/${userID}`, {
+  const userData = await fetch(`${apiUrl}/users/userData/${userid || userID}`, {
     method: "GET",
     credentials: "include",
     headers: {
@@ -102,4 +103,19 @@ export const getUserData = async () => {
   });
 
   return await userData.json();
+};
+
+export const getClassData = async (id: number | string): Promise<Class> => {
+  if (!id) {
+    return { id: -1, teacher: -1, name: "", code: "", students: [] };
+  }
+  const classData = await fetch(`${apiUrl}/classes/${id}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return (await classData.json())[0];
 };

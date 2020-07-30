@@ -15,11 +15,14 @@ const App = () => {
         <Route exact path="/">
           Home page here
         </Route>
-        <Route path="/loginRegister">
+        <Route exact path="/loginRegister">
           <LoginRegister></LoginRegister>
         </Route>
-        <Route path="/classes">
+        <Route exact path="/classes">
           <Classes></Classes>
+        </Route>
+        <Route exact path="/classes/:id">
+          some random class here
         </Route>
       </Switch>
     </HashRouter>
