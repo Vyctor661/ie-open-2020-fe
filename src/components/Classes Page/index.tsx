@@ -25,8 +25,6 @@ const GetTableOfClasses = async (
 
   const List = await Promise.all(
     allClasses.map(async (value, index) => {
-      console.log(value);
-
       return (
         <tr
           className="listItemWrapper"
@@ -85,7 +83,10 @@ export default () => {
         <div className="classesWrapper">
           <div className="profileCreateClass">
             <div className="userName">{userData.name}</div>
-            {userData.role !== "Student" ? (
+            <div className="additionalClassesinfo">
+              Total classes: {userData.classes.length}
+            </div>
+            {userData.role === "Teacher" || userData.role === "Admin" ? (
               <div className="createNewClass">
                 <div className="instead">
                   <button>Create New Class</button>

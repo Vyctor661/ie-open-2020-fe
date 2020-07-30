@@ -44,6 +44,14 @@ td {
 }
 
 .allClasses {
+  overflow: auto;
+  max-height: 80vh;
   width: 70%;
   margin: 0 auto;
+}
+
+.additionalClassesinfo {
+  font-size: 20px;
+  text-align: left;
+  padding: 10px 15px;
 }
