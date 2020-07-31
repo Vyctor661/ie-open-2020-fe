@@ -5,7 +5,7 @@ Secondary ligther: #2b415e
 
 Error: #f44336
 
-Warning: #4caf50
+Warning: #fa8c05
 
 Info: #2196f3
 

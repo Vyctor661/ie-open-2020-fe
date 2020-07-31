@@ -23,6 +23,9 @@ const ClassSettings = (props: { classid: string }) => {
     name: "",
     students: [],
     teacher: -1,
+    homework: [],
+    studentHWProgress: [],
+    studentStatus: [],
   });
   const Update = async () => {
     const userData = await getUserData();
@@ -46,9 +49,12 @@ const ClassSettings = (props: { classid: string }) => {
       <h3 className="classesUserHwPannel">
         Class Size: {classData.students.length}
       </h3>
-      <h3 className="classesUserHwPannel">Seeing class as: {userData.role}</h3>
+      <h3 className="classesUserHwPannel">
+        Seeing class as:{" "}
+        {userData.role?.charAt(0).toUpperCase() + userData.role?.slice(1)}
+      </h3>
       <h3 className="classesUserHwPannel">Teacher: {teacherData.name}</h3>
-      {userData.role === "Teacher" ? (
+      {userData.role === "teacher" ? (
         <h3 className="classesUserHwPannel">Code: {classData.code}</h3>
       ) : (
         ""
@@ -86,7 +92,7 @@ const ClassHomework = (props: { classid: string }) => {
           </div>
         ))}
       </div>
-      {userData.role === "Teacher" ? (
+      {userData.role === "teacher" ? (
         <div>
           <Link to={`/addHomework/${props.classid}`}>
             <button className="addHomeworkButton">Add homework</button>
@@ -109,8 +115,8 @@ const MessageToChat = (props: {
 }) => {
   return (
     <div className="chatMessage" key={props.data.id + props.data.message}>
-      {new Date(Number(props.data.time)).toString()} - {props.data.author} -{" "}
-      {props.data.message}
+      {new Date(Number(props.data.time)).toLocaleTimeString("en-US")} -{" "}
+      {props.data.author}: {props.data.message}
     </div>
   );
 };
@@ -126,8 +132,9 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
       props.ws.onmessage = (e) => {
         const parsedData = JSON.parse(e.data);
         const { category, data } = parsedData;
-        console.log(`Received a message of category ${category}`, data);
         if (category === "ping") {
+          console.log("pong");
+
           return;
         }
         if (category === "messageList") {
@@ -138,22 +145,40 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
                 author: string;
                 message: string;
                 time: string;
-              }) => <MessageToChat data={l}></MessageToChat>
+              }) => (
+                <MessageToChat
+                  data={l}
+                  key={data.id + data.message + Math.random()}
+                ></MessageToChat>
+              )
             )
           );
         }
         if (category === "newMessage") {
-          setChat(
-            [...chat, <MessageToChat data={data}></MessageToChat>]
-          );
+          setChat([
+            <MessageToChat
+              data={data}
+              key={data.id + data.message + Math.random()}
+            ></MessageToChat>,
+            ...chat,
+          ]);
         }
       };
     }
-  }, [props.ws]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.ws.readyState === props.ws.OPEN, chat]);
+
+  window.onbeforeunload = () => {};
 
   useEffect(() => {
     if (props.ws) {
       sendWebsocket(props.ws, "loginClass", {
+        id: localStorage.getItem("userid"),
+        classid: props.classid,
+      });
+
+      sendWebsocket(props.ws, "setOnline", {
         id: localStorage.getItem("userid"),
         classid: props.classid,
       });
@@ -164,6 +189,39 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
       });
     }
   }, [props.ws, props.classid]);
+
+  window.onblur = () => {
+    sendWebsocket(props.ws, "setAway", {
+      id: localStorage.getItem("userid"),
+      classid: props.classid,
+    });
+  };
+
+  window.onfocus = () => {
+    sendWebsocket(props.ws, "setOnline", {
+      id: localStorage.getItem("userid"),
+      classid: props.classid,
+    });
+  };
+
+  useEffect(() => {
+    const cleanup = () => {
+      // do your cleanup
+      alert("Component unloaded.");
+      sendWebsocket(props.ws, "leaveClass", {
+        id: localStorage.getItem("userid"),
+        classid: props.classid,
+      });
+    };
+
+    window.addEventListener("beforeunload", cleanup);
+
+    return () => {
+      window.removeEventListener("beforeunload", cleanup);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -195,17 +253,22 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
   );
 };
 
-const generateListOfParticipants = async (data: Array<User>) => {
+const generateListOfParticipants = async (
+  data: Array<User>,
+  classid: string
+) => {
+  const classData = await getClassData(classid);
   const list = await Promise.all(
     data.map((value, index) => {
+      if (!classData.studentStatus) return <div key={index + value.name}></div>;
       return (
         <div
           key={index + value.name}
           style={
-            value.studentStatus === "online"
+            classData.studentStatus[value.id] === "online"
               ? { color: "#4caf50" }
-              : value.studentStatus === "idle"
-              ? { color: "#4caf50" }
+              : classData.studentStatus[value.id] === "idle"
+              ? { color: "#fa8c05" }
               : { color: "lightgray" }
           }
         >
@@ -238,16 +301,24 @@ const ClassParticipants = () => {
 
   const UpdateParticipants = async () => {
     const participants = await getAllParticipantUsers(id);
-    setParticipants(await generateListOfParticipants(participants));
+    setParticipants(await generateListOfParticipants(participants, id));
   };
   useEffect(() => {
     UpdateParticipants();
+    const interval = setInterval(() => {
+      UpdateParticipants();
+    }, 10000);
+
+    return () => {
+      clearInterval(interval);
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div>
       <h2>Participants</h2>
-      {participants}
+      <div className="participantsList">{participants}</div>
     </div>
   );
 };

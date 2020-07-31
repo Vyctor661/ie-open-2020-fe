@@ -49,7 +49,13 @@ export const joinClassByCode = async (code: string): Promise<string> => {
   return result.message;
 };
 
-export const createHW = async (classid: number, name: string, questionType: string, choices: string[], correctChoice: string): Promise<string> => {
+export const createHW = async (
+  classid: number,
+  name: string,
+  questionType: string,
+  choices: string[],
+  correctChoice: string
+): Promise<string> => {
   const result = await (
     await fetch(`${apiUrl}/homework/addHW`, {
       method: "POST",
@@ -57,10 +63,16 @@ export const createHW = async (classid: number, name: string, questionType: stri
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ dueDate: 0, classid, name, questions: [{ name, type: questionType, choices, correctChoice }] }),
+      body: JSON.stringify({
+        dueDate: 0,
+        classid,
+        name,
+        questions: [{ name, type: questionType, choices, correctChoice }],
+      }),
     })
   ).json();
   console.log(result);
+  if (result.status === 200) window.location.replace("#/classes");
   return result.message;
 };
 
@@ -152,7 +164,16 @@ export const getUserData = async (userid?: string | number) => {
 
 export const getClassData = async (id: number | string): Promise<Class> => {
   if (!id) {
-    return { id: -1, teacher: -1, name: "", code: "", students: [] };
+    return {
+      id: -1,
+      teacher: -1,
+      name: "",
+      code: "",
+      students: [],
+      homework: [],
+      studentHWProgress: [],
+      studentStatus: [],
+    };
   }
   const classData = await fetch(`${apiUrl}/classes/${id}`, {
     method: "GET",

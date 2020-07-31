@@ -134,6 +134,7 @@ const LongAnswerQuestion = (props: { question: Question }) => {
 export default () => {
   const { id } = useParams();
   const [isLogged, setIsLogged] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hwData, setHwData] = useState<Homework>({
     id: -1,
     classid: -1,
@@ -153,7 +154,6 @@ export default () => {
 
       setHwData(resp);
       const question = await GenerateQuestions(resp.questions[0]);
-      console.log(question);
       setGeneratedQuestions(question);
     }
 

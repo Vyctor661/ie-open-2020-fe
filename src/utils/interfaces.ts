@@ -1,11 +1,3 @@
-export interface Class {
-  id: number;
-  teacher: number;
-  students: Array<number>;
-  name: string;
-  code: string;
-}
-
 export interface Homework {
   id: number;
   classid: number;
@@ -26,7 +18,21 @@ export interface Question {
 
 type Role = "student" | "teacher" | "admin";
 
-type StudentStatus = "online" | "idle" | "offline";
+interface StudentHWProgress {
+  completed: boolean;
+  score: number;
+}
+export type StudentStatus = "online" | "idle" | "offline";
+export interface Class {
+  id: number;
+  teacher: number;
+  students: number[];
+  name: string;
+  code: string;
+  homework: number[];
+  studentHWProgress: Record<number, Record<number, StudentHWProgress>>;
+  studentStatus: Record<number, StudentStatus>;
+}
 
 export interface User {
   id: number;
