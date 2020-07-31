@@ -10,29 +10,75 @@
   margin: 4px;
 }
 .classSettings {
-  border: 1px solid #2b415e;
+  border: 1px solid #212121;
   height: 50%;
   margin-bottom: 6px;
-  background-color: #2b415e;
+  background-color: #212121;
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  transition: box-shadow 1s;
 }
+.classSettings:hover {
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  transition: 0.3s ease-in-out;
+}
+
 .classHomework {
-  border: 1px solid #2b415e;
+  border: 1px solid #212121;
   height: 50%;
-  background-color: #2b415e;
+  background-color: #212121;
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  transition: box-shadow 1s;
+}
+.classHomework:hover {
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  transition: 0.3s ease-in-out;
 }
 .classChat {
-  border: 1px solid #2b415e;
+  border: 1px solid #212121;
+  background-color: #212121;
+
   height: 100%;
   width: 50%;
   margin: 4px;
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  transition: box-shadow 1s;
 }
+.classChat:hover {
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  transition: 0.3s ease-in-out;
+}
+
 .classParticipants {
-  border: 1px solid #2b415e;
+  background-color: #212121;
+
+  border: 1px solid #212121;
   height: 100%;
   width: 20%;
   margin: 4px;
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  transition: box-shadow 1s;
 }
-/* brb */
+
+.classParticipants:hover {
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  transition: 0.3s ease-in-out;
+}
 
 h1,
 h2 {
@@ -57,12 +103,22 @@ h2 {
   color: teal;
 }
 .areaChat {
-  background-color: #2b415e;
+  background-color: #162130;
   text-align: left;
   padding: 10px;
   height: 77vh;
   overflow: auto;
   margin-top: 20px;
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  transition: box-shadow 1s;
+}
+.areaChat:hover {
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  transition: 0.3s ease-in-out;
 }
 .chatForm {
   width: 95%;
@@ -73,7 +129,7 @@ h2 {
   width: 90%;
   margin: auto;
   height: 40px;
-  background-color: #212121;
+  background-color: #2b415e;
   margin-top: 40px;
 }
 
@@ -87,4 +143,18 @@ h2 {
 }
 .classesUserHwPannel {
   word-wrap: break-word;
+}
+
+.inputChat {
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+  transition: box-shadow 1s;
+}
+
+.inputChat:hover {
+  -webkit-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  -moz-box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  box-shadow: 0px 0px 14px 0px rgba(23, 23, 23, 1);
+  transition: 0.3s ease-in-out;
 }

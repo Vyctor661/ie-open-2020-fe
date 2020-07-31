@@ -179,6 +179,10 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
 
   useEffect(() => {
     if (props.ws) {
+      props.ws.onopen = () => {
+        console.log("Connected");
+        setChat([<div key="chatDisconnected">Connected!</div>, ...chat]);
+      };
       sendWebsocket(props.ws, "loginClass", {
         id: localStorage.getItem("userid"),
         classid: props.classid,
@@ -194,6 +198,7 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
         classid: props.classid,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.ws, props.classid]);
 
   window.onblur = () => {
@@ -213,7 +218,7 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
   useEffect(() => {
     const cleanup = () => {
       // do your cleanup
-      alert("Component unloaded.");
+      setChat([<div key="chatDisconnected">Disconnected!</div>, ...chat]);
       sendWebsocket(props.ws, "leaveClass", {
         id: localStorage.getItem("userid"),
         classid: props.classid,
@@ -340,9 +345,6 @@ export default () => {
   const { id } = useParams();
 
   useEffect(() => {
-    ws.onopen = () => {
-      console.log("Connected");
-    };
     ws.onclose = () => {
       console.log("Disconnected");
     };
