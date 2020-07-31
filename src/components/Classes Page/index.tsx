@@ -14,12 +14,22 @@ const GetTableOfClasses = async (
 
   const allClasses: Array<Class> = await Promise.all(
     classes.map((value) => {
+      console.log(value);
+
       return getClassData(value);
     })
   );
+
+  if (!allClasses[0].teacher)
+    return <h1>Looks like you don't participate in any classes.</h1>;
   const allTeachers = await Promise.all(
-    allClasses.map((value) => {
-      return getUserData(value.teacher);
+    allClasses.map(async (value: Class) => {
+      console.log(value);
+
+      if (value!!.teacher) {
+        const userData = await getUserData(value.teacher);
+        return userData;
+      }
     })
   );
 

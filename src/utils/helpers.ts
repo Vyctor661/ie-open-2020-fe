@@ -67,12 +67,15 @@ export const createHW = async (
         dueDate: 0,
         classid,
         name,
-        questions: [{ name, type: questionType, choices, correctChoice }],
+        questions: [{ name, type: questionType, choices }],
+        correctChoice,
       }),
     })
   ).json();
   console.log(result);
-  if (result.status === 200) window.location.replace("#/classes");
+  if (result.message === "Successfully added homework") {
+    window.location.replace("#/classes");
+  }
   return result.message;
 };
 
@@ -88,6 +91,11 @@ export const createClass = async (name: string): Promise<string> => {
     })
   ).json();
   console.log(result);
+
+  if (result.message === "Successfully made a class") {
+    window.location.replace("#/classes");
+  }
+
   return result.message;
 };
 
@@ -190,7 +198,21 @@ export const getClassHWData = async (
   id: number | string
 ): Promise<Homework[]> => {
   if (!id) {
-    return [{ id: -1, classid: -1, dueDate: -1, name: "", questions: [] }];
+    return [
+      {
+        id: -1,
+        classid: -1,
+        dueDate: -1,
+        name: "",
+        question: {
+          id: -1,
+          choices: [],
+          homeworkid: -1,
+          name: "",
+          type: "short",
+        },
+      },
+    ];
   }
   const classData = await fetch(`${apiUrl}/homework/hwForClass/${id}`, {
     method: "GET",
@@ -204,7 +226,19 @@ export const getClassHWData = async (
 
 export const hwDataById = async (id: number | string): Promise<Homework> => {
   if (!id) {
-    return { id: -1, classid: -1, dueDate: -1, name: "", questions: [] };
+    return {
+      id: -1,
+      classid: -1,
+      dueDate: -1,
+      name: "",
+      question: {
+        id: -1,
+        choices: [],
+        homeworkid: -1,
+        name: "",
+        type: "short",
+      },
+    };
   }
   const classData = await fetch(`${apiUrl}/homework/hwData/${id}`, {
     method: "GET",
