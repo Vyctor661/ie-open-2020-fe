@@ -49,6 +49,21 @@ export const joinClassByCode = async (code: string): Promise<string> => {
   return result.message;
 };
 
+export const createHW = async (classid: number, name: string, questionType: string, choices: string[], correctChoice: string): Promise<string> => {
+  const result = await (
+    await fetch(`${apiUrl}/homework/addHW`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ dueDate: 0, classid, name, questions: [{ name, type: questionType, choices, correctChoice }] }),
+    })
+  ).json();
+  console.log(result);
+  return result.message;
+};
+
 export const createClass = async (name: string): Promise<string> => {
   const result = await (
     await fetch(`${apiUrl}/classes/newClass`, {
