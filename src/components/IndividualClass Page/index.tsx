@@ -10,7 +10,7 @@ import {
   getClassHWData,
   sendWebsocket,
 } from "../../utils/helpers";
-import { Class, Homework } from "../../utils/interfaces";
+import { Class, Homework, User } from "../../utils/interfaces";
 
 import { setWsHeartbeat } from "ws-heartbeat/client";
 
@@ -116,7 +116,9 @@ const MessageToChat = (props: {
 };
 
 const ClassChat = (props: { ws: WebSocket; classid: string }) => {
-  const [chat, setChat] = useState<Array<JSX.Element>>([<div>Loading...</div>]);
+  const [chat, setChat] = useState<Array<JSX.Element>>([
+    <div key="defaultChatKey"></div>,
+  ]);
   const [chatInput, setChatInput] = useState("");
 
   useEffect(() => {
@@ -151,7 +153,6 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
 
   useEffect(() => {
     if (props.ws) {
-      console.log("oonga chonga");
       sendWebsocket(props.ws, "loginClass", {
         id: localStorage.getItem("userid"),
         classid: props.classid,
@@ -177,7 +178,8 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
           }}
           onKeyDown={(e) => {
             if (e.which === 13) {
-              console.log("Pressed enter!");
+              console.log("Sent!");
+
               sendWebsocket(props.ws, "newMessage", {
                 id: localStorage.getItem("userid"),
                 message: chatInput,
@@ -193,10 +195,59 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
   );
 };
 
+const generateListOfParticipants = async (data: Array<User>) => {
+  const list = await Promise.all(
+    data.map((value, index) => {
+      return (
+        <div
+          key={index + value.name}
+          style={
+            value.studentStatus === "online"
+              ? { color: "#4caf50" }
+              : value.studentStatus === "idle"
+              ? { color: "#4caf50" }
+              : { color: "lightgray" }
+          }
+        >
+          {value.name}
+        </div>
+      );
+    })
+  );
+  return list;
+};
+
+const getAllParticipantUsers = async (classid: string) => {
+  const classData = await getClassData(classid);
+  const participants = await Promise.all(
+    classData.students.map((id) => {
+      const userData = getUserData(id);
+      return userData;
+    })
+  );
+
+  return participants;
+};
+
 const ClassParticipants = () => {
+  const [participants, setParticipants] = useState<Array<JSX.Element>>([
+    <div key="defaultParticipants"></div>,
+  ]);
+
+  const { id } = useParams();
+
+  const UpdateParticipants = async () => {
+    const participants = await getAllParticipantUsers(id);
+    setParticipants(await generateListOfParticipants(participants));
+  };
+  useEffect(() => {
+    UpdateParticipants();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div>
-      <h1>Participants</h1>
+      <h2>Participants</h2>
+      {participants}
     </div>
   );
 };
@@ -220,7 +271,8 @@ export default () => {
     };
     setWsHeartbeat(ws, '{"category": "ping"}');
     UpdateIsLogged();
-  }, [ws]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="ClassWrapper">
