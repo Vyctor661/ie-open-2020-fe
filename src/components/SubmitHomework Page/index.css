@@ -94,7 +94,8 @@
 }
 .addHomeworkButton {
   display: block;
-  margin: auto;
+  margin: 20px auto;
+  height: auto;
 }
 a {
   text-decoration: none;

@@ -58,11 +58,11 @@ h2 {
 }
 .areaChat {
   background-color: #2b415e;
-
   text-align: left;
   padding: 10px;
-  height: 79vh;
+  height: 77vh;
   overflow: auto;
+  margin-top: 20px;
 }
 .chatForm {
   width: 95%;
@@ -84,4 +84,7 @@ h2 {
 }
 .participantsList {
   font-size: 25px;
+}
+.classesUserHwPannel {
+  word-wrap: break-word;
 }
