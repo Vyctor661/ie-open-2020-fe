@@ -13,7 +13,7 @@ export default () => {
 
   const submit = async () => {
     statusDiv.current.innerHTML = "";
-    const status = await register(role, username, password);
+    const status = await register(role.toLowerCase(), username, password);
     statusDiv.current.innerHTML = status;
   };
 

@@ -122,7 +122,7 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
   const [chatInput, setChatInput] = useState("");
 
   useEffect(() => {
-    if (props.ws && props.ws.readyState === props.ws.OPEN) {
+    if (props.ws) {
       props.ws.onmessage = (e) => {
         const parsedData = JSON.parse(e.data);
         const { category, data } = parsedData;
@@ -140,6 +140,11 @@ const ClassChat = (props: { ws: WebSocket; classid: string }) => {
                 time: string;
               }) => <MessageToChat data={l}></MessageToChat>
             )
+          );
+        }
+        if (category === "newMessage") {
+          setChat(
+            [...chat, <MessageToChat data={data}></MessageToChat>]
           );
         }
       };
