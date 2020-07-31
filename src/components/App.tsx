@@ -4,9 +4,14 @@ import "./App.css";
 import { NavBar } from "./common/Navigation Bar/index";
 import LoginRegister from "./LoginRegister Page/index";
 import Classes from "./Classes Page/index";
+import HomePage from "./Home Page";
+import IndividualClassPage from "./IndividualClass Page/index";
+import JoinClassPage from "./JoinClass Page/index";
+import SubmitHomeworkPage from "./SubmitHomework Page/index";
+import AddHomeworkPage from "./AddHomework Page/index";
+import CreateClassPage from "./CreateClass Page/index";
 
 import { HashRouter, Route, Switch } from "react-router-dom";
-import HomePage from "./Home Page";
 
 const App = () => {
   return (
@@ -16,14 +21,26 @@ const App = () => {
         <Route exact path="/">
           <HomePage></HomePage>
         </Route>
-        <Route exact path="/loginRegister">
+        <Route path="/loginRegister">
           <LoginRegister></LoginRegister>
         </Route>
         <Route exact path="/classes">
           <Classes></Classes>
         </Route>
         <Route exact path="/classes/:id">
-          some random class here
+          <IndividualClassPage></IndividualClassPage>
+        </Route>
+        <Route exact path="/join/:code">
+          <JoinClassPage></JoinClassPage>
+        </Route>
+        <Route exact path="/homework/:id">
+          <SubmitHomeworkPage></SubmitHomeworkPage>
+        </Route>
+        <Route exact path="/addHomework/:id">
+          <AddHomeworkPage></AddHomeworkPage>
+        </Route>
+        <Route exact path="/createClass">
+          <CreateClassPage></CreateClassPage>
         </Route>
       </Switch>
     </HashRouter>

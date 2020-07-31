@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import useWindowDimensions from "../../utils/useWindowDimensions";
 
 export default () => {
-  const { height, width } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const displayedHeight = width > 400 ? 400 : width * 0.9;
 

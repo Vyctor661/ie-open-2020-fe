@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import "./index.css";
 import {
@@ -8,8 +8,11 @@ import {
   getLoggedIn,
   getClassData,
   getClassHWData,
+  sendWebsocket,
 } from "../../utils/helpers";
 import { Class, Homework } from "../../utils/interfaces";
+
+import { setWsHeartbeat } from "ws-heartbeat/client";
 
 const ClassSettings = (props: { classid: string }) => {
   const [userData, setUserData] = useState<any>({});
@@ -28,7 +31,6 @@ const ClassSettings = (props: { classid: string }) => {
     setClassData(classData);
     setUserData(userData);
     setTeacherData(teacherData);
-    console.log(userData, classData, teacherData);
   };
 
   useEffect(() => {
@@ -46,37 +48,142 @@ const ClassSettings = (props: { classid: string }) => {
       </h3>
       <h3 className="classesUserHwPannel">Seeing class as: {userData.role}</h3>
       <h3 className="classesUserHwPannel">Teacher: {teacherData.name}</h3>
-      {userData.role === "Teacher" ? <h3>Code: {classData.code}</h3> : ""}
+      {userData.role === "Teacher" ? (
+        <h3 className="classesUserHwPannel">Code: {classData.code}</h3>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
 
 const ClassHomework = (props: { classid: string }) => {
   const [hwData, setHwData] = useState<Homework[]>([]);
+  const [userData, setUserData] = useState<any>({});
+
   const Update = async () => {
+    const userData = await getUserData();
     const hwData = await getClassHWData(props.classid);
     setHwData(hwData);
+    setUserData(userData);
   };
   useEffect(() => {
     Update();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.classid]);
   return (
     <div>
       <h1>Homework</h1>
-      {hwData.map((l: Homework) => (
-        <h3 className="classesUserHwPannel" key={l.id + l.name}>
-          {l.name}
-        </h3>
-      ))}
+      <div className="homeworkList">
+        {hwData.map((l: Homework) => (
+          <div key={l.name + l.id} className="homeworkListLink">
+            <Link to={`/homework/${l.id}`}>
+              <h3 className="classesUserHwPannel" key={l.id + l.name}>
+                {l.name}
+              </h3>
+            </Link>
+          </div>
+        ))}
+      </div>
+      {userData.role === "Teacher" ? (
+        <div>
+          <Link to={`/addHomework/${props.classid}`}>
+            <button className="addHomeworkButton">Add homework</button>
+          </Link>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
 
-const ClassChat = () => {
+const MessageToChat = (props: {
+  data: {
+    id: number;
+    author: string;
+    message: string;
+    time: string;
+  };
+}) => {
+  return (
+    <div className="chatMessage" key={props.data.id + props.data.message}>
+      {new Date(Number(props.data.time)).toString()} - {props.data.author} -{" "}
+      {props.data.message}
+    </div>
+  );
+};
+
+const ClassChat = (props: { ws: WebSocket; classid: string }) => {
+  const [chat, setChat] = useState<Array<JSX.Element>>([<div>Loading...</div>]);
+  const [chatInput, setChatInput] = useState("");
+
+  useEffect(() => {
+    if (props.ws && props.ws.readyState === props.ws.OPEN) {
+      props.ws.onmessage = (e) => {
+        const parsedData = JSON.parse(e.data);
+        const { category, data } = parsedData;
+        console.log(`Received a message of category ${category}`, data);
+        if (category === "ping") {
+          return;
+        }
+        if (category === "messageList") {
+          setChat(
+            data.map(
+              (l: {
+                id: number;
+                author: string;
+                message: string;
+                time: string;
+              }) => <MessageToChat data={l}></MessageToChat>
+            )
+          );
+        }
+      };
+    }
+  }, [props.ws]);
+
+  useEffect(() => {
+    if (props.ws) {
+      console.log("oonga chonga");
+      sendWebsocket(props.ws, "loginClass", {
+        id: localStorage.getItem("userid"),
+        classid: props.classid,
+      });
+
+      sendWebsocket(props.ws, "getMessages", {
+        id: localStorage.getItem("userid"),
+        classid: props.classid,
+      });
+    }
+  }, [props.ws, props.classid]);
+
   return (
     <div>
-      <h1>Pannel3</h1>
+      <form className="chatForm">
+        <div className="areaChat">{chat}</div>
+        <input
+          type="text"
+          className="inputChat"
+          placeholder="Press enter to send message!"
+          onChange={(e) => {
+            setChatInput(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            if (e.which === 13) {
+              console.log("Pressed enter!");
+              sendWebsocket(props.ws, "newMessage", {
+                id: localStorage.getItem("userid"),
+                message: chatInput,
+                classid: props.classid,
+              });
+              setChatInput("");
+            }
+          }}
+          value={chatInput}
+        />
+      </form>
     </div>
   );
 };
@@ -84,13 +191,14 @@ const ClassChat = () => {
 const ClassParticipants = () => {
   return (
     <div>
-      <h1>Pannel4</h1>
+      <h1>Participants</h1>
     </div>
   );
 };
 
 export default () => {
   const [isLogged, setIsLogged] = useState(false);
+  const ws = new WebSocket("ws://localhost:8090");
 
   const UpdateIsLogged = async () => {
     setIsLogged(await getLoggedIn());
@@ -99,8 +207,15 @@ export default () => {
   const { id } = useParams();
 
   useEffect(() => {
+    ws.onopen = () => {
+      console.log("Connected");
+    };
+    ws.onclose = () => {
+      console.log("Disconnected");
+    };
+    setWsHeartbeat(ws, '{"category": "ping"}');
     UpdateIsLogged();
-  }, []);
+  }, [ws]);
 
   return (
     <div className="ClassWrapper">
@@ -116,7 +231,7 @@ export default () => {
           </div>
 
           <div className="classChat">
-            <ClassChat></ClassChat>
+            <ClassChat classid={id} ws={ws}></ClassChat>
           </div>
           <div className="classParticipants">
             <ClassParticipants></ClassParticipants>

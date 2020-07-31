@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-// import { Switch, Route } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import "./index.css";
 import { getUserData, getLoggedIn, getClassData } from "../../utils/helpers";
@@ -72,10 +72,12 @@ export default () => {
     setAllClasses(await GetTableOfClasses(userData.classes));
   };
 
+  const location = useLocation();
+
   useEffect(() => {
     Update();
     UpdateIsLogged();
-  }, [userData.id, allClasses.key]);
+  }, [userData.id, allClasses.key, location.pathname]);
 
   return (
     <>
@@ -84,12 +86,14 @@ export default () => {
           <div className="profileCreateClass">
             <div className="userName">{userData.name}</div>
             <div className="additionalClassesinfo">
-              Total classes: {userData.classes.length}
+              Total classes: {userData.classes?.length}
             </div>
             {userData.role === "Teacher" || userData.role === "Admin" ? (
               <div className="createNewClass">
-                <div className="instead">
-                  <button>Create New Class</button>
+                <div>
+                  <Link to={`/createClass`}>
+                    <button className="">Create New Class</button>
+                  </Link>
                 </div>
               </div>
             ) : (

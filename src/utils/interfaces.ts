@@ -11,7 +11,7 @@ export interface Homework {
   classid: number;
   name: string;
   dueDate: number;
-  questions: number[];
+  questions: Question[];
 }
 
 export type QuestionType = "choice" | "short" | "essay";

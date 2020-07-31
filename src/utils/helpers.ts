@@ -180,5 +180,36 @@ export const submitHwData = async (
     },
     body: JSON.stringify({ homeworkid: hwid, choices }),
   });
-  return classData.json();
+  return (await classData.json()).message;
 };
+
+export type ResponseCategory =
+  | "ping"
+  | "messageSendResponse"
+  | "newMessage"
+  | "loginClassResponse"
+  | "leaveClassResponse"
+  | "studentStatusUpdate"
+  | "messageList";
+
+export type IncomingCategory =
+  | "ping"
+  | "loginClass"
+  | "leaveClass"
+  | "newMessage"
+  | "getMessages"
+  | "setOnline"
+  | "setAway";
+
+export const sendWebsocket = (
+  socket: WebSocket,
+  category: IncomingCategory,
+  data: unknown
+) => {
+  if (socket.readyState === socket.OPEN) {
+    const stringified = JSON.stringify({ category, data });
+    socket.send(stringified);
+  }
+};
+
+export const websocketParser = JSON.parse;
