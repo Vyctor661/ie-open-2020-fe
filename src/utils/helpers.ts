@@ -49,6 +49,21 @@ export const joinClassByCode = async (code: string): Promise<string> => {
   return result.message;
 };
 
+export const createClass = async (name: string): Promise<string> => {
+  const result = await (
+    await fetch(`${apiUrl}/classes/newClass`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name }),
+    })
+  ).json();
+  console.log(result);
+  return result.message;
+};
+
 export const login = async (username: string, password: string) => {
   const response = await fetch(`${apiUrl}/auth/login`, {
     method: "POST",

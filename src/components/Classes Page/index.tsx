@@ -88,7 +88,7 @@ export default () => {
             <div className="additionalClassesinfo">
               Total classes: {userData.classes?.length}
             </div>
-            {userData.role === "Teacher" || userData.role === "Admin" ? (
+            {userData.role === "teacher" || userData.role === "admin" ? (
               <div className="createNewClass">
                 <div>
                   <Link to={`/createClass`}>
