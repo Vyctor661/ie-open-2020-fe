@@ -54,8 +54,10 @@ const ClassSettings = (props: { classid: string }) => {
         {userData.role?.charAt(0).toUpperCase() + userData.role?.slice(1)}
       </h3>
       <h3 className="classesUserHwPannel">Teacher: {teacherData.name}</h3>
-      {userData.role === "teacher" ? (
-        <h3 className="classesUserHwPannel">Code: {classData.code}</h3>
+      {userData.role === "teacher" && teacherData.id === userData.id ? (
+        <h3 className="classesUserHwPannel">
+          Link: {"http://localhost:3000/#/join/" + classData.code}
+        </h3>
       ) : (
         ""
       )}
@@ -66,10 +68,14 @@ const ClassSettings = (props: { classid: string }) => {
 const ClassHomework = (props: { classid: string }) => {
   const [hwData, setHwData] = useState<Homework[]>([]);
   const [userData, setUserData] = useState<any>({});
+  const [teacherData, setTeacherData] = useState<any>({});
 
   const Update = async () => {
     const userData = await getUserData();
     const hwData = await getClassHWData(props.classid);
+    const classData = await getClassData(props.classid);
+    const teacherData = await getUserData(classData.teacher);
+    setTeacherData(teacherData);
     setHwData(hwData);
     setUserData(userData);
   };
@@ -92,7 +98,7 @@ const ClassHomework = (props: { classid: string }) => {
           </div>
         ))}
       </div>
-      {userData.role === "teacher" ? (
+      {userData.role === "teacher" && teacherData.id === userData.id ? (
         <div>
           <Link to={`/addHomework/${props.classid}`}>
             <button className="addHomeworkButton">Add homework</button>
