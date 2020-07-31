@@ -5,6 +5,8 @@ import "./index.css";
 import { getLoggedIn, hwDataById } from "../../utils/helpers";
 import { Homework, Question } from "../../utils/interfaces";
 
+import { apiUrl } from "../../utils/constants";
+
 // const invalidQuestion: Question = {
 //   choices: [],
 //   homeworkid: -1,
@@ -13,9 +15,25 @@ import { Homework, Question } from "../../utils/interfaces";
 //   type: "choice"
 // }
 
+const submit = async (homeworkid: string, answer: string) => {
+  const result = await fetch(`${apiUrl}/homework/completeHW`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({ homeworkid, choices: answer }),
+  });
+  console.log(await result.json());
+};
+
 const MultipleChoiceQuestion = (props: { question: Question }) => {
-  const [checked, setChecked] = useState(-1);
   const [question, setQuestion] = useState<Question>(props.question);
+  const [checked1, setChecked1] = useState(false);
+  const [checked2, setChecked2] = useState(false);
+  const [checked3, setChecked3] = useState(false);
+  const [checked4, setChecked4] = useState(false);
 
   useEffect(() => {
     setQuestion(props.question);
@@ -24,17 +42,18 @@ const MultipleChoiceQuestion = (props: { question: Question }) => {
 
   return (
     <div className="multipleChoiceQuestion">
-      <h2>{question.name}</h2>
+      <h5>Multiple choice answer</h5>
 
       <label className="multipleChoiceRadio">
         {props.question.choices[0]}
         <input
           type="radio"
-          checked={checked === 0}
+          checked={checked1}
           onChange={(e) => {
-            if (e.target.checked) {
-              setChecked(-1);
-            } else setChecked(0);
+            setChecked1(e.target.checked);
+            setChecked2(!e.target.checked);
+            setChecked3(!e.target.checked);
+            setChecked4(!e.target.checked);
           }}
         />
         <span className="checkmark"></span>
@@ -45,11 +64,12 @@ const MultipleChoiceQuestion = (props: { question: Question }) => {
 
         <input
           type="radio"
-          checked={checked === 1}
+          checked={checked2}
           onChange={(e) => {
-            if (e.target.checked) {
-              setChecked(-1);
-            } else setChecked(1);
+            setChecked1(!e.target.checked);
+            setChecked2(e.target.checked);
+            setChecked3(!e.target.checked);
+            setChecked4(!e.target.checked);
           }}
         />
         <span className="checkmark"></span>
@@ -60,11 +80,12 @@ const MultipleChoiceQuestion = (props: { question: Question }) => {
 
         <input
           type="radio"
-          checked={checked === 2}
+          checked={checked3}
           onChange={(e) => {
-            if (e.target.checked) {
-              setChecked(-1);
-            } else setChecked(2);
+            setChecked1(!e.target.checked);
+            setChecked2(!e.target.checked);
+            setChecked3(e.target.checked);
+            setChecked4(!e.target.checked);
           }}
         />
         <span className="checkmark"></span>
@@ -75,21 +96,41 @@ const MultipleChoiceQuestion = (props: { question: Question }) => {
 
         <input
           type="radio"
-          checked={checked === 3}
+          checked={checked4}
           onChange={(e) => {
-            if (e.target.checked) {
-              setChecked(-1);
-            } else setChecked(3);
+            setChecked1(!e.target.checked);
+            setChecked2(!e.target.checked);
+            setChecked3(!e.target.checked);
+            setChecked4(e.target.checked);
           }}
         />
         <span className="checkmark"></span>
       </label>
+      <div className="outerHwbutton">
+        <button
+          className="addHomeworkButton"
+          onClick={() => {
+            const answer = checked1
+              ? question.choices[0]
+              : checked2
+              ? question.choices[1]
+              : checked3
+              ? question.choices[2]
+              : question.choices[3];
+            submit(question.homeworkid.toString(), answer);
+          }}
+        >
+          Submit homework
+        </button>
+      </div>
     </div>
   );
 };
 
 const ShortAnswerQuestion = (props: { question: Question }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [question, setQuestion] = useState<Question>(props.question);
+  const [answer, setAnswer] = useState("");
 
   useEffect(() => {
     setQuestion(props.question);
@@ -97,35 +138,69 @@ const ShortAnswerQuestion = (props: { question: Question }) => {
   }, []);
   return (
     <div className="shortAnswerQuestion">
-      <h2>{question.name}</h2>
       <div className="shortAnswerInput">
         <label>
-          Short answer
-          <input type="text" required />
+          <h5>Short answer</h5>
+
+          <input
+            type="text"
+            onChange={(e) => {
+              setAnswer(e.target.value);
+            }}
+            required
+            value={answer}
+          />
         </label>
+      </div>
+      <div className="outerHwbutton">
+        <button
+          className="addHomeworkButton"
+          onClick={() => {
+            submit(question.homeworkid.toString(), answer);
+          }}
+        >
+          Submit homework
+        </button>
       </div>
     </div>
   );
 };
 
 const LongAnswerQuestion = (props: { question: Question }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [question, setQuestion] = useState<Question>(props.question);
+  const [answer, setAnswer] = useState("");
   useEffect(() => {
     setQuestion(props.question);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div className="longAnswerQuestion">
-      <h2>{question.name}</h2>
       <div className="longAnswerTextarea">
         <label>
-          Long answer
+          <h5>Long answer</h5>
+
           <textarea
             placeholder="Type your answer here..."
             required
             rows={10}
+            value={answer}
+            onChange={(e) => {
+              setAnswer(e.target.value);
+            }}
           ></textarea>
         </label>
+      </div>
+      <div className="outerHwbutton">
+        <button
+          className="addHomeworkButton"
+          onClick={() => {
+            submit(question.homeworkid.toString(), answer);
+          }}
+        >
+          Submit homework
+        </button>
       </div>
     </div>
   );
@@ -140,7 +215,13 @@ export default () => {
     classid: -1,
     dueDate: -1,
     name: "",
-    questions: [],
+    question: {
+      id: -1,
+      choices: [],
+      homeworkid: -1,
+      name: "",
+      type: "short",
+    },
   });
   const [generatedQuestions, setGeneratedQuestions] = useState<JSX.Element>(
     <></>
@@ -151,9 +232,10 @@ export default () => {
 
     if (loggedIn) {
       const resp = (await hwDataById(id)) as Homework;
-
       setHwData(resp);
-      const question = await GenerateQuestions(resp.questions[0]);
+      const question = await GenerateQuestions(resp.question, resp);
+      console.log(resp);
+
       setGeneratedQuestions(question);
     }
 
@@ -165,19 +247,25 @@ export default () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const GenerateQuestions = async (data: Question) => {
-    return data.type === "choice" ? (
-      <div className="individualQuestion">
-        <MultipleChoiceQuestion question={data}></MultipleChoiceQuestion>
-      </div>
-    ) : data.type === "short" ? (
-      <div className="individualQuestion">
-        {<ShortAnswerQuestion question={data}></ShortAnswerQuestion>}
-      </div>
-    ) : (
-      <div className="individualQuestion">
-        {<LongAnswerQuestion question={data}></LongAnswerQuestion>}
-      </div>
+  const GenerateQuestions = async (data: Question, resp: Homework) => {
+    if (!data) return <></>;
+    return (
+      <>
+        <h3 className="QuestionTitle">{resp.name}</h3>
+        {data.type === "choice" ? (
+          <div className="individualQuestion">
+            <MultipleChoiceQuestion question={data}></MultipleChoiceQuestion>
+          </div>
+        ) : data.type === "short" ? (
+          <div className="individualQuestion">
+            {<ShortAnswerQuestion question={data}></ShortAnswerQuestion>}
+          </div>
+        ) : (
+          <div className="individualQuestion">
+            {<LongAnswerQuestion question={data}></LongAnswerQuestion>}
+          </div>
+        )}
+      </>
     );
   };
 
@@ -186,6 +274,7 @@ export default () => {
       {isLogged ? (
         <>
           <div className="questions">
+            <h2>Answer</h2>
             <form>{generatedQuestions}</form>
           </div>
         </>

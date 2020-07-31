@@ -86,5 +86,20 @@
 
 .individualQuestion {
   margin: auto;
+  width: 95%;
   min-height: 20px;
+}
+.outerHwbutton {
+  width: 100%;
+}
+.addHomeworkButton {
+  display: block;
+  margin: auto;
+}
+a {
+  text-decoration: none;
+}
+.QuestionTitle {
+  width: 95%;
+  margin: auto;
 }
