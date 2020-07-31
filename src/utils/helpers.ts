@@ -170,6 +170,18 @@ export const getUserData = async (userid?: string | number) => {
   return await userData.json();
 };
 
+export const getHwForClass = async (classid: number) => {
+  const userData = await fetch(`${apiUrl}/classes/hwForClass/${classid}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return await userData.json();
+};
+
 export const getClassData = async (id: number | string): Promise<Class> => {
   if (!id) {
     return {
