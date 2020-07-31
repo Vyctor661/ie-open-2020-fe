@@ -19,6 +19,6 @@ This project has many features, which include:
 ![Add class page](https://cdn.discordapp.com/attachments/657679044497899572/738711766950740028/unknown.png)
 
 ## Contributors
+[@Vyctor661](https://github.com/Vyctor661)
+[@xWafl](https://github.com/xWafl)
 
-@Vyctor661
-@xWafl
