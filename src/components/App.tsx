@@ -10,6 +10,7 @@ import JoinClassPage from "./JoinClass Page/index";
 import SubmitHomeworkPage from "./SubmitHomework Page/index";
 import AddHomeworkPage from "./AddHomework Page/index";
 import CreateClassPage from "./CreateClass Page/index";
+import AllHomework from "./Allhomework Page/index";
 
 import { HashRouter, Route, Switch } from "react-router-dom";
 
@@ -41,6 +42,9 @@ const App = () => {
         </Route>
         <Route exact path="/createClass">
           <CreateClassPage></CreateClassPage>
+        </Route>
+        <Route exact path="/allhomework/:id">
+          <AllHomework></AllHomework>
         </Route>
       </Switch>
     </HashRouter>

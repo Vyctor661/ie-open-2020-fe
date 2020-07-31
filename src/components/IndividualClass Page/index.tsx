@@ -99,11 +99,18 @@ const ClassHomework = (props: { classid: string }) => {
         ))}
       </div>
       {userData.role === "teacher" && teacherData.id === userData.id ? (
-        <div>
-          <Link to={`/addHomework/${props.classid}`}>
-            <button className="addHomeworkButton">Add homework</button>
-          </Link>
-        </div>
+        <>
+          <div>
+            <Link to={`/addHomework/${props.classid}`}>
+              <button className="addHomeworkButton">Add homework</button>
+            </Link>
+          </div>
+          <div>
+            <Link to={`/allhomework/${props.classid}`}>
+              <button className="addHomeworkButton">Class's homework</button>
+            </Link>
+          </div>
+        </>
       ) : (
         ""
       )}

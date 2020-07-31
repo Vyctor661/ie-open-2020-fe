@@ -38,9 +38,14 @@ td {
   border-bottom: 1px solid white;
 }
 
+tr {
+  transition: 0.7s;
+}
+
 tr:hover {
   background-color: teal;
   cursor: pointer;
+  transition: 0.2s ease-in-out;
 }
 
 td {
